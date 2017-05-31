@@ -1,0 +1,13 @@
+$ sudo yum --disablerepo="*" --enablerepo="packages-microsoft-com-prod" list available
+http://packages.microsoft.com/rhel/7.3/prod/ [23]
+
+dbfs.x86_64                     0.1.5-0                     packages-microsoft-com-prod
+msodbcsql.x86_64                13.1.7.0-1                  packages-microsoft-com-prod
+mssql-tools.x86_64              14.0.5.0-1                  packages-microsoft-com-prod
+omi.x86_64                      1.2.0-35                    packages-microsoft-com-prod
+omi-psrp-server.x86_64          1.0.0-18                    packages-microsoft-com-prod
+packages-microsoft-prod.noarch  1.0-1.el7                   packages-microsoft-com-prod
+powershell.x86_64               6.0.0_beta.1-1.el7.centos   packages-microsoft-com-prod
+unixODBC-utf16.x86_64           2.3.1-1                     packages-microsoft-com-prod
+unixODBC-utf16-devel.x86_64     2.3.1-1                     packages-microsoft-com-prod
+

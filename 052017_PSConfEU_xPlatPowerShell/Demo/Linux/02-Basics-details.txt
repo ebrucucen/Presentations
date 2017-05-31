@@ -1,0 +1,9 @@
+Beta1: 
+- $psversiontable: PSEdition                      Core 
+
+#$env:PSModulePath.Split(':')
+/root/.local/share/powershell/Modules
+/usr/local/share/powershell/Modules
+/opt/microsoft/powershell/6.0.0-beta.1/Modules [system32]
+
+

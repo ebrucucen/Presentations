@@ -1,23 +1,32 @@
+#Step1: Get details about Powershell
 $PSVersionTable
-
 $IsLinux
 $IsWindows
 $IsOSX
+#Beta1: 
+#Powershell
+$PSVersionTable.OS
+#Bash : 
+uname -svr
 
+#Step2: Getting comfortable :
 Get-Command | more
+#you can do / inside more...
 Get-Process
 gps
 
+#Step3: windows commands will work not linux ones...
 ls env:
 dir env:
 Get-ChildItem -Path env:
 
+#Step4: 
 $env:PSModulePath
 $env:PSModulePath.Split(':')
 Get-Module -ListAvailable
 Find-Module -Tag Linux
 
-#work with Azure
+<#Skip: Show PPT [work with Azure]
 Install-Module -Name AzureRM.NetCore.Preview -Scope CurrentUser -Force
 Get-Command -Module AzureRM.Resources.NetCore.Preview
 Import-Module AzureRM.NetCore.Preview
@@ -32,13 +41,18 @@ $O365Credential = Get-Credential -UserName ben@bgelens.nl
 $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $O365Credential -Authentication Basic -AllowRedirection
 #Import-PSSession -Session $Session
 Invoke-Command -Session $Session -ScriptBlock {Get-Mailbox}
+#>
 
-#work with Linux files
+#Step5: work with Linux files
 Get-Content -Path /etc/passwd
 $import = Import-Csv -Path /etc/passwd -Delimiter ':' -Header Name,Pwd,UID,GUID,Info,Home,Shell
 $import
 $import | Group-Object -Property Shell
-chsh -s /usr/bin/powershell ben
+#PRerequisite: add user:
+whoami
+useradd ebru
+passwd ebru
+chsh -s /usr/bin/powershell ebru
 mate-terminal -e "su ben"
 
 #os release
@@ -63,7 +77,7 @@ function Get-OSInfo {
 Get-OSInfo
 Get-OSInfo -Full
 
-# I want to know about the disks / volumes
+# I want to know about the disks / volumes ! Error
 Get-Disk
 Get-Volume
 
@@ -98,7 +112,13 @@ Get-LinuxVolume | Sort-Object -Property Available | Select-Object -First 1
 
 # now we have 2 tools, let's put them in a Module
 $userModulePath = $env:PSModulePath.Split(':').where{$_.split('/')[1] -eq 'root' -and $_.split('/') -notcontains '.vscode'}
+
+
+
 $ModuleDir = New-Item -Path $userModulePath -Name MyTools -ItemType Directory
+
+
+
 $psm1 = New-Item -Path $ModuleDir.FullName -ItemType File -Name MyTools.psm1
 (Get-Command -Name Get-OSInfo).ScriptBlock.Ast.Extent.Text |
     Out-File $psm1 -Append -Encoding utf8
@@ -107,7 +127,10 @@ $psm1 = New-Item -Path $ModuleDir.FullName -ItemType File -Name MyTools.psm1
 New-ModuleManifest -Path (Join-Path $ModuleDir.FullName 'MyTools.psd1') -RootModule MyTools.psm1 -FunctionsToExport @('Get-OSInfo','Get-LinuxVolume')
 
 # see the module is now available
-mate-terminal -e powershell
+#new ssh connect:
+powershell
+get-module -listavailable
+
 
 # working with API SWAPI
 wget --header="Content-Type: application/json" http://swapi.co/api -qO- | python -m json.tool

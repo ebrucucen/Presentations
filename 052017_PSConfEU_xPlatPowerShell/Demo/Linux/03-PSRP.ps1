@@ -10,19 +10,26 @@ yum -y install omi
 yum localinstall -y ../Packages/omi-1.2.0-35.ulinux.x64.rpm 
 
 systemctl status omid
+#no ports open verify:
 netstat -anp | grep 598[56]
 
 # configure port 5985 and 5986
-psedit /etc/opt/omi/conf/omiserver.conf
+chmod +700 /etc/opt/omi/conf/omiserver.conf
+sudo vi /etc/opt/omi/conf/omiserver.conf
 systemctl restart omid
+#see 2 listeners available now:
 netstat -anp | grep 598[56]
 
 # open ports in firewall
+#got to aws ..
 /bin/firewall-cmd --zone=public --add-port=5985/tcp --permanent
 /bin/firewall-cmd --zone=public --add-port=5986/tcp --permanent
 /bin/firewall-cmd --reload
 
 #show cim now works from Windows to Linux
+#set root password: 
+passwd root 
+Welkom01 
 
 #show cim from Linux to Windows
 Get-Command -Noun Cim*
